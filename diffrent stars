@@ -1,0 +1,67 @@
+proyB = [.604 .0096];
+SiriB = [1 .0084];
+eriB = [.501, .011];
+CD = [.74 .01245];
+wA485 = [.59 .015];
+L92 = [.7 .0149];
+L60 = [.53 .0120];
+G54 = [.46 .0130];
+G181 = [.50 .0110];
+G64 = [.59, .0110];
+ 
+
+
+
+IC    = [.1 0];
+options = odeset('NonNegative',1,'RelTol',1e-4);
+[r,y]   = ode45(@hope,[0 1000000],IC,options);
+figure()
+plot(r,y(:,2),'r',r,y(:,1),'b')
+xlabel('R')
+ylabel('DENSITY & MASS')
+title('Mass and density distribution of a white dwarf for cetral dencity 0.1 - ODE45')
+legend('Mass', 'Density')
+pc=logspace(-1, 6);%% going from orde -1 to order 6
+mfinal=zeros(1,length(pc));
+rfinal=zeros(1,length(pc));
+ 
+for i = 1:length(pc)
+    [r,y] = ode45(@hope, [0 1000000], [pc(i), 0], options);
+    mfinal(i) = 0.7123*real(y(end));
+    rfinal(i) = (5.5483*10^-3)*real(r(end)); 
+end
+ 
+figure()
+plot(mfinal,rfinal)
+xlabel('Mass (solar masses)')
+ylabel('Radius (solar radiuses)')
+title('Masses of white dwarfs vs solar radii - ODE45 method')
+hold on
+errorbar(proyB(1), proyB(2), -.004, .004, -.018, .018)
+errorbar(SiriB(1), SiriB(2), -.0002, .0002, -.016, .016)
+errorbar(eriB(1), eriB(2), -.0002, .0002, -.011, .011)
+errorbar(wA485(1), wA485(2), -.001, .001, -.04, .04)
+errorbar(CD(1), CD(2), -.0004, .0004, -.04, .04)
+errorbar(L92(1), L92(2), -.001, .001, -.12, .12)
+errorbar(L60(1), L60(2), -.0004, .0004, -.05, .05)
+errorbar(G54(1), G54(2), -.002, .002, -.08, .08)
+errorbar(G181(1), G181(2), -.001, .001, -.05, .05)
+errorbar(G64(1), G64(2), -.001, .001, -.06, .06)
+ 
+s = spline(rfinal,mfinal,0);
+disp ("the Limiting mass(in solar mass) from the RK2 method is ")
+s
+disp ("in comarison to the actual limiting factor of 1.45900 ")
+ 
+ms = abs(mfinal - mfinalrk2);
+raderr = abs(rfinal - rfinalrk2);
+figure()
+plot(1:50, ms, '-r')
+xlabel('Iterations')
+ylabel('Relative error')
+title('Relative error between ODE45 and RK2')
+ 
+
+ 
+ 
+ 
