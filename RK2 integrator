@@ -1,0 +1,16 @@
+
+
+% RK2 METHOD 
+function [r, y] = RK2(func, rmax, IC, h)
+ 
+y(:,1) = IC;
+nstep = rmax/h;
+r = 0:h:rmax;
+ 
+% ITTERTAING LOOP 
+ 
+for n = 1:nstep
+    k1 = h * func(r(n), y(:,n));
+    k2 = h * func(r(n) + h/2, y(:,n) + k1/2);
+    y(:,n+1) = y(:,n) + k2;
+end
