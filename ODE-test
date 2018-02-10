@@ -1,0 +1,23 @@
+
+
+
+
+
+
+pc= logspace(-1,6);
+RR=[eps 1025450];
+MFINAL=zeros(length(pc));
+RFINAL=zeros(length(pc));
+
+
+ for i=1:length(pc)
+     [R,M]= ODESHIT([pc(i) 0] ,RR);
+     MFINAL(i,1)=real (M).*0.7123;
+     RFINAL(i,1)=real(R).*5.5483*10^(-3);
+ end
+ 
+ plot(MFINAL,RFINAL)
+ 
+ 
+ 
+     
